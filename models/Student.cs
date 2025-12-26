@@ -22,6 +22,6 @@ public class Student: Person
     public Course[] Courses
     {
         get => courses;
-        set => courses = value ?? throw new ArgumentNullException(nameof(value));
+        set => courses = value;
     }
 }

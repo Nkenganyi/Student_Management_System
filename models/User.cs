@@ -48,24 +48,72 @@ public class User:Person
     return null;
   }
   
+  public string updateStudentMarks(User user, Student[]students, int studentId, double marks, string courseName)
+  {
+    string message = null;
+    double oldMarks = 0.0;
+    if (user.role.Equals(Roles.TEACHER))
+    {
+      foreach (Student student in students)
+      {
+        if (studentId == student.StudentId)
+        {
+          foreach (Course course in student.Courses)
+          {
+            if (courseName.Equals(course.CourseName))
+            {
+              oldMarks = course.CourseMarks;
+              course.CourseMarks = marks;
+              message = $"Marks updated from {oldMarks} to {marks}.";
+            }
+          }
+        }
+        else
+        {
+          message = "Student not found";
+        }
+      }
+    }
+    return message;
+  }
+  
+  public string deleteStudent(User user, int studentId, Student[]students)
+  {
+    string message = null;
+    if (user.role.Equals(Roles.ADMIN) || user.role.Equals(Roles.MANAGER))
+    {
+      for (int i = 0; i < students.Length; i++){
+        if (studentId == students[i].StudentId)
+        {
+          students[i] = null;
+          message = "Student deleted successfully";
+        }
+        else
+        {
+         message = "Student not found";
+        }
+      }
+    }
+    return message;
+  }
   
   
   
   public string Email
   {
     get => email;
-    set => email = value ?? throw new ArgumentNullException(nameof(value));
+    set => email = value;
   }
 
   public string Password
   {
     get => password;
-    set => password = value ?? throw new ArgumentNullException(nameof(value));
+    set => password = value;
   }
 
   public string Role
   {
     get => role;
-    set => role = value ?? throw new ArgumentNullException(nameof(value));
+    set => role = value;
   }
 }
