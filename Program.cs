@@ -4,6 +4,8 @@ class Program
 {
     static void Main(string[] args)
     {
+        User[] users = null;
+        School school = null;
         Console.WriteLine("Welcome to NKENTECH SCHOOL MANAGEMENT SYSTEM");
         bool ctrl_loop = true;
         while (ctrl_loop)
@@ -16,7 +18,7 @@ class Program
             switch (options)
             {
                 case 1:
-                    School school = new School();
+                    school = new School();
                     school.Users = new User[4];
                     Console.Write("Name of School: ");
                     school.Name = Console.ReadLine();
@@ -30,11 +32,37 @@ class Program
                     principal.Role = Convert.ToString(Roles.PRINCIPAL);
                     Console.WriteLine($"Welcome {principal.FirstName} {principal.LastName} of {school.Name}\n" +
                                       $"Please provide your login details below");
-                    
-                    
+                    Console.Write("Enter email: ");
+                    principal.Email = Console.ReadLine();
+                    Console.Write("Enter password: ");
+                    principal.Password = Console.ReadLine();
+                    school.Users[0] = principal;
                     break;
                 case 2:
-                    Console.WriteLine("Login: ");
+                    Console.WriteLine("Provide Login Credentials\n------------------------");
+                    Console.Write("Username(email): ");
+                    string email = Console.ReadLine();
+                    Console.Write("Enter Password: ");
+                    string password = Console.ReadLine();
+                    foreach (User user in school.Users )
+                    {
+                        if (email.Equals(user.Email) && password.Equals(user.Password) && user.Role.Equals(Roles.PRINCIPAL))
+                        {
+                            Console.WriteLine("1: Register Teacher");
+                            Console.WriteLine("2: Register Student");
+                            Console.WriteLine("3: Update Student");
+                            Console.WriteLine("4: Delete Student");
+                        }else if (email.Equals(user.Email) && password.Equals(user.Password) &&
+                                  user.Role.Equals(Roles.TEACHER))
+                        {
+                            
+                        }
+                        else
+                        {
+                            Console.WriteLine("Incorrect login credentials");
+                        }   
+                    }
+                    
                     break;
                 case 0:
                     Console.WriteLine("Program Exiting: ");
