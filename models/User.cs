@@ -21,7 +21,7 @@ public class User:Person
 
   public Student register(User user, Student student)
   {
-    if (user.role.Equals(Roles.ADMIN) || user.role.Equals(Roles.MANAGER))
+    if (user.role.Equals(Roles.ADMIN) || user.role.Equals(Roles.PRINCIPAL))
     {
       return student;
     }
@@ -34,7 +34,7 @@ public class User:Person
 
   public Student updateStudent(User user, int studentId, Student[]students)
   {
-    if (user.role.Equals(Roles.ADMIN) || user.role.Equals(Roles.MANAGER))
+    if (user.role.Equals(Roles.ADMIN) || user.role.Equals(Roles.PRINCIPAL))
     {
       foreach (Student student in students)
       {
@@ -80,7 +80,7 @@ public class User:Person
   public string deleteStudent(User user, int studentId, Student[]students)
   {
     string message = null;
-    if (user.role.Equals(Roles.ADMIN) || user.role.Equals(Roles.MANAGER))
+    if (user.role.Equals(Roles.ADMIN) || user.role.Equals(Roles.PRINCIPAL))
     {
       for (int i = 0; i < students.Length; i++){
         if (studentId == students[i].StudentId)
