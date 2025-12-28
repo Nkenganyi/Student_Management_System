@@ -29,7 +29,7 @@ class Program
                     principal.LastName = Console.ReadLine();
                     Console.Write("Principal's Date of Birth: ");
                     principal.BirthDate = DateTime.Parse(Console.ReadLine());
-                    principal.Role = Convert.ToString(Roles.PRINCIPAL);
+                    principal.Role = Roles.PRINCIPAL;
                     Console.WriteLine($"Welcome {principal.FirstName} {principal.LastName} of {school.Name}\n" +
                                       $"Please provide your login details below");
                     Console.Write("Enter email: ");
@@ -37,6 +37,7 @@ class Program
                     Console.Write("Enter password: ");
                     principal.Password = Console.ReadLine();
                     school.Users[0] = principal;
+                    Console.WriteLine(principal.Role);
                     break;
                 case 2:
                     Console.WriteLine("Provide Login Credentials\n------------------------");
@@ -44,17 +45,33 @@ class Program
                     string email = Console.ReadLine();
                     Console.Write("Enter Password: ");
                     string password = Console.ReadLine();
-                    foreach (User user in school.Users )
+                    for (int i = 0; i < school.Users.Length; i++)
                     {
-                        if (email.Equals(user.Email) && password.Equals(user.Password) && user.Role.Equals(Roles.PRINCIPAL))
+                        if (email.Equals(school.Users[i].Email) && password.Equals(school.Users[i].Password) && school.Users[i].Role == (Enum)Roles.PRINCIPAL)
                         {
                             Console.WriteLine("1: Register Teacher");
                             Console.WriteLine("2: Register Student");
                             Console.WriteLine("3: Update Student");
                             Console.WriteLine("4: Delete Student");
-                        }else if (email.Equals(user.Email) && password.Equals(user.Password) &&
-                                  user.Role.Equals(Roles.TEACHER))
+                        }else if (email.Equals(school.Users[i].Email) && password.Equals(school.Users[i].Password) &&
+                                  school.Users[i].Role == (Enum)Roles.TEACHER)
                         {
+                            Console.WriteLine("1: Update Student Marks");
+                            //Console.WriteLine("0: To exit");
+                            int toptions = Convert.ToInt32(Console.ReadLine());
+                            switch (toptions)
+                            {
+                                case 1:
+                                    Console.WriteLine("Enter Student ID: ");
+                                    int id = Convert.ToInt32(Console.ReadLine());
+                                    Console.WriteLine("Enter Course Name: ");
+                                    string courseName = Console.ReadLine();
+                                    Console.WriteLine("Enter New Marks: ");
+                                    double marks = Convert.ToDouble(Console.ReadLine());
+                            
+                                    school.Users[i].updateStudentMarks(school.Users[i], school.Students, id, marks, courseName);
+                                    break;
+                            }
                             
                         }
                         else

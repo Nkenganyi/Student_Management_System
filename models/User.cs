@@ -4,13 +4,13 @@ public class User:Person
 {
   private string email;
   private string password;
-  private string role;
+  private Enum role;
 
   public User()
   {
   }
 
-  public User(string email, string password, string role)
+  public User(string email, string password, Enum role)
   {
     this.email = email;
     this.password = password;
@@ -111,7 +111,7 @@ public class User:Person
     set => password = value;
   }
 
-  public string Role
+  public Enum Role
   {
     get => role;
     set => role = value;
