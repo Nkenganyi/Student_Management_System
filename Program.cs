@@ -27,7 +27,7 @@ class Program
                     principal.FirstName = Console.ReadLine();
                     Console.Write("Principal's Last Name: ");
                     principal.LastName = Console.ReadLine();
-                    Console.Write("Principal's Date of Birth: ");
+                    Console.Write("Principal's Date of Birth (mm/dd/yyyy): ");
                     principal.BirthDate = DateTime.Parse(Console.ReadLine());
                     principal.Role = Roles.PRINCIPAL;
                     Console.WriteLine($"Welcome {principal.FirstName} {principal.LastName} of {school.Name}\n" +
@@ -37,49 +37,110 @@ class Program
                     Console.Write("Enter password: ");
                     principal.Password = Console.ReadLine();
                     school.Users[0] = principal;
-                    Console.WriteLine(principal.Role);
+                    Console.WriteLine(school.Users[0].Role);
                     break;
                 case 2:
+                    if (school == null || school.Users == null)
+                    {
+                        Console.WriteLine("No registered users found.");
+                        break;
+                    }
                     Console.WriteLine("Provide Login Credentials\n------------------------");
                     Console.Write("Username(email): ");
-                    string email = Console.ReadLine();
+                    string e = Console.ReadLine();
                     Console.Write("Enter Password: ");
-                    string password = Console.ReadLine();
-                    for (int i = 0; i < school.Users.Length; i++)
-                    {
-                        if (email.Equals(school.Users[i].Email) && password.Equals(school.Users[i].Password) && school.Users[i].Role == (Enum)Roles.PRINCIPAL)
-                        {
-                            Console.WriteLine("1: Register Teacher");
-                            Console.WriteLine("2: Register Student");
-                            Console.WriteLine("3: Update Student");
-                            Console.WriteLine("4: Delete Student");
-                        }else if (email.Equals(school.Users[i].Email) && password.Equals(school.Users[i].Password) &&
-                                  school.Users[i].Role == (Enum)Roles.TEACHER)
-                        {
-                            Console.WriteLine("1: Update Student Marks");
-                            //Console.WriteLine("0: To exit");
-                            int toptions = Convert.ToInt32(Console.ReadLine());
-                            switch (toptions)
-                            {
-                                case 1:
-                                    Console.WriteLine("Enter Student ID: ");
-                                    int id = Convert.ToInt32(Console.ReadLine());
-                                    Console.WriteLine("Enter Course Name: ");
-                                    string courseName = Console.ReadLine();
-                                    Console.WriteLine("Enter New Marks: ");
-                                    double marks = Convert.ToDouble(Console.ReadLine());
-                            
-                                    school.Users[i].updateStudentMarks(school.Users[i], school.Students, id, marks, courseName);
-                                    break;
-                            }
-                            
-                        }
-                        else
-                        {
-                            Console.WriteLine("Incorrect login credentials");
-                        }   
-                    }
+                    string p = Console.ReadLine();
+
+                    bool isAuthenticated = false;
                     
+                        foreach (User u in school.Users)
+                        {
+                            if(u == null)continue;
+                            
+                            if (e == u.Email && p == u.Password)
+                            {
+                                isAuthenticated = true;
+                                if (u.Role == Roles.PRINCIPAL)
+                                {
+                                    while (isAuthenticated)
+                                    {
+                                        Console.WriteLine("1: Register Teacher");
+                                        Console.WriteLine("2: Register Student");
+                                        Console.WriteLine("3: Update Student");
+                                        Console.WriteLine("4: Delete Student");
+                                        Console.WriteLine("0: to logout");
+                                        Console.Write("choose option: ");
+                                        int pOption = Convert.ToInt32(Console.ReadLine());
+                                        switch (pOption)
+                                        {
+                                            case 0:
+                                                isAuthenticated = false;
+                                                break;
+                                            case 1:
+                                                User teacher = new User();
+                                                Console.Write("Teacher's First Name: ");
+                                                teacher.FirstName = Console.ReadLine();
+                                                Console.Write("Teacher's Last Name: ");
+                                                teacher.LastName = Console.ReadLine();
+                                                Console.Write("Teacher's Date of Birth (mm/dd/yyyy): ");
+                                                teacher.BirthDate = DateTime.Parse(Console.ReadLine());
+                                                teacher.Role = Roles.TEACHER;
+                                                Console.WriteLine("Provide Login credentials \n ---------------------------------------------");
+                                                Console.Write("Username(email): ");
+                                                teacher.Email = Console.ReadLine();
+                                                Console.Write("Enter Password: ");
+                                                teacher.Password = Console.ReadLine();
+                                                for(int i = 0; i < school.Users.Length; i++)
+                                                {
+                                                    if(school.Users[i] != null) continue;
+
+                                                    if (school.Users[i] == null)
+                                                    {
+                                                        school.Users[i] = teacher;
+                                                        i = school.Users.Length + 1;
+                                                    }
+                                                }
+                                                break;
+                                            case 2:
+                                                break;
+                                            case 3:
+                                                break;
+                                            case 4:
+                                                break;
+                                            
+                                        }
+                                    }
+                                    isAuthenticated = true;
+
+                                }
+                                else if (u.Role == Roles.TEACHER)
+                                {
+                                    Console.WriteLine("1: Update Student Marks");
+                                    Console.WriteLine("0: To Logout");
+                                    int toptions = Convert.ToInt32(Console.ReadLine());
+                                    if (toptions == 1)
+                                    {
+                                       Console.WriteLine("Enter Student ID: ");
+                                            int id = Convert.ToInt32(Console.ReadLine());
+                                            Console.WriteLine("Enter Course Name: ");
+                                            string courseName = Console.ReadLine();
+                                            Console.WriteLine("Enter New Marks: ");
+                                            double marks = Convert.ToDouble(Console.ReadLine());
+
+                                            u.updateStudentMarks(u, school.Students, id, marks,
+                                                courseName);
+                                        
+                                    }
+                                }
+                                break; //stop searching once found
+                            }
+                        }
+
+                    if (!isAuthenticated)
+                    {
+                        Console.WriteLine("Incorrect login credentials");
+                    }
+
                     break;
                 case 0:
                     Console.WriteLine("Program Exiting: ");
@@ -91,6 +152,6 @@ class Program
                 
             }
             
-        }
-    }
+        }//while loop
+    }//main method
 }
