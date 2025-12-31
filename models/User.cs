@@ -37,9 +37,19 @@ public class User : Person
     }
 
 
-    public Student register(Student student)
+    public void register(Student student, Student [] students)
     {
-        return student;
+        for(int i = 0; i < students.Length; i++)
+        {
+            if(students[i] != null) continue;
+
+            if (students[i] == null)
+            {
+                students[i] = student;
+                i = students.Length + 1;
+            }
+        }
+       
     }
 
     public Student updateStudent(int studentId, Student[] students)
