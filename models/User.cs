@@ -1,119 +1,103 @@
 namespace Student_Management_System;
 
-public class User:Person
+public class User : Person
 {
-  private string email;
-  private string password;
-  private Roles role;
+    private string email;
+    private string password;
+    private Roles role;
 
-  public User()
-  {
-  }
-
-  public User(string email, string password, Roles role)
-  {
-    this.email = email;
-    this.password = password;
-    this.role = role;
-  }
-
-
-
-  public Student register(User user, Student student)
-  {
-    if (user.role.Equals(Roles.ADMIN) || user.role.Equals(Roles.PRINCIPAL))
+    public User()
     {
-      return student;
     }
-    else
-    {
-      return null;
-    }
-    
-  }
 
-  public Student updateStudent(User user, int studentId, Student[]students)
-  {
-    if (user.role.Equals(Roles.ADMIN) || user.role.Equals(Roles.PRINCIPAL))
+    public User(string email, string password, Roles role)
     {
-      foreach (Student student in students)
-      {
-        if (studentId == student.StudentId)
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+
+    public string Email
+    {
+        get => email;
+        set => email = value;
+    }
+
+    public string Password
+    {
+        get => password;
+        set => password = value;
+    }
+
+    public Roles Role
+    {
+        get => role;
+        set => role = value;
+    }
+
+
+    public Student register(Student student)
+    {
+        return student;
+    }
+
+    public Student updateStudent(int studentId, Student[] students)
+    {
+        foreach (Student student in students)
         {
-          return student;
-        }
-      }
-    }
-
-    return null;
-  }
-  
-  public string updateStudentMarks(User user, Student[]students, int studentId, double marks, string courseName)
-  {
-    string message = null;
-    double oldMarks = 0.0;
-    if (user.role.Equals(Roles.TEACHER))
-    {
-      foreach (Student student in students)
-      {
-        if (studentId == student.StudentId)
-        {
-          foreach (Course course in student.Courses)
-          {
-            if (courseName.Equals(course.CourseName))
+            if (studentId == student.StudentId)
             {
-              oldMarks = course.CourseMarks;
-              course.CourseMarks = marks;
-              message = $"Marks updated from {oldMarks} to {marks}.";
+                return student;
             }
-          }
         }
-        else
-        {
-          message = "Student not found";
-        }
-      }
+
+        return null;
     }
-    return message;
-  }
-  
-  public string deleteStudent(User user, int studentId, Student[]students)
-  {
-    string message = null;
-    if (user.role.Equals(Roles.ADMIN) || user.role.Equals(Roles.PRINCIPAL))
+
+    public string updateStudentMarks(Student[] students, int studentId, double marks, string courseName)
     {
-      for (int i = 0; i < students.Length; i++){
-        if (studentId == students[i].StudentId)
+        string message = null;
+        double oldMarks = 0.0;
+        foreach (Student student in students)
         {
-          students[i] = null;
-          message = "Student deleted successfully";
+            if (studentId == student.StudentId)
+            {
+                foreach (Course course in student.Courses)
+                {
+                    if (courseName.Equals(course.CourseName))
+                    {
+                        oldMarks = course.CourseMarks;
+                        course.CourseMarks = marks;
+                        message = $"Marks updated from {oldMarks} to {marks}.";
+                    }
+                }
+            }
+            else
+            {
+                message = "Student not found";
+            }
         }
-        else
-        {
-         message = "Student not found";
-        }
-      }
+
+        return message;
     }
-    return message;
-  }
-  
-  
-  
-  public string Email
-  {
-    get => email;
-    set => email = value;
-  }
 
-  public string Password
-  {
-    get => password;
-    set => password = value;
-  }
+    public string deleteStudent(int studentId, Student[] students)
+    {
+        string message = null;
+        for (int i = 0; i < students.Length; i++)
+        {
+            if (studentId == students[i].StudentId)
+            {
+                students[i] = null;
+                message = "Student deleted successfully";
+            }
+            else
+            {
+                message = "Student not found";
+            }
+        }
 
-  public Roles Role
-  {
-    get => role;
-    set => role = value;
-  }
+        return message;
+    }
 }

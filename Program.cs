@@ -10,9 +10,9 @@ class Program
         bool ctrl_loop = true;
         while (ctrl_loop)
         {
-            Console.WriteLine("To register Press 1");
-            Console.WriteLine("Already have an account press 2");
-            Console.WriteLine("0 to exit\n------------------------------------");
+            Console.WriteLine("1: REGISTER");
+            Console.WriteLine("1: LOGIN");
+            Console.WriteLine("0: EXIT\n------------------------------------");
             Console.Write("Input Option: ");
             int options = Convert.ToInt32(Console.ReadLine());
             switch (options)
@@ -60,7 +60,7 @@ class Program
                             if (e == u.Email && p == u.Password)
                             {
                                 isAuthenticated = true;
-                                if (u.Role == Roles.PRINCIPAL)
+                                if (u.Role == Roles.PRINCIPAL || u.Role == Roles.ADMIN)
                                 {
                                     while (isAuthenticated)
                                     {
@@ -84,8 +84,20 @@ class Program
                                                 teacher.LastName = Console.ReadLine();
                                                 Console.Write("Teacher's Date of Birth (mm/dd/yyyy): ");
                                                 teacher.BirthDate = DateTime.Parse(Console.ReadLine());
-                                                teacher.Role = Roles.TEACHER;
-                                                Console.WriteLine("Provide Login credentials \n ---------------------------------------------");
+                                                Console.WriteLine("Choose a Role for the user \n" +
+                                                                  "1: TEACHER\n" +
+                                                                  "2: ADMIN");
+                                                int roles = Convert.ToInt32(Console.ReadLine());
+                                                if (roles == 1)
+                                                {
+                                                    teacher.Role = Roles.TEACHER;  
+                                                }else if (roles == 2)
+                                                {
+                                                    teacher.Role = Roles.ADMIN;
+                                                }
+                                                
+                                                Console.WriteLine("Provide Login credentials \n" +
+                                                                  " ---------------------------------------------");
                                                 Console.Write("Username(email): ");
                                                 teacher.Email = Console.ReadLine();
                                                 Console.Write("Enter Password: ");
@@ -127,7 +139,7 @@ class Program
                                             Console.WriteLine("Enter New Marks: ");
                                             double marks = Convert.ToDouble(Console.ReadLine());
 
-                                            u.updateStudentMarks(u, school.Students, id, marks,
+                                            u.updateStudentMarks(school.Students, id, marks,
                                                 courseName);
                                         
                                     }
