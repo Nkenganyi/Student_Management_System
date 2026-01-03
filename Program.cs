@@ -71,6 +71,7 @@ class Program
                                     Console.WriteLine("2: Register Student");
                                     Console.WriteLine("3: Update Student");
                                     Console.WriteLine("4: Delete Student");
+                                    Console.WriteLine("5: Add courses");
                                     Console.WriteLine("0: to logout");
                                     Console.Write("choose option: ");
                                     int pOption = Convert.ToInt32(Console.ReadLine());
